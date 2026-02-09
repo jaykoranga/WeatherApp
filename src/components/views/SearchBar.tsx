@@ -49,8 +49,11 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
   function handleSubmitInput(city?: City | null) {
     const cityToUse = city ?? selectedCity
     if (!cityToUse){
-      toast.error("please select a city to fetch")
-      return
+      if(!searchInput)toast.error("please select a city to fetch")
+        else{
+         toast.error("no such city exists")  
+        }
+      return  
     } 
 
     console.log("Search weather for:", cityToUse)
@@ -171,7 +174,7 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
       </button>
 
       {displayCity && (
-        <div className={`w-full md:w-auto px-4 py-2 md:px-5 md:py-2.5 rounded-lg ${cityDisplayClass} font-medium text-sm md:text-base border ${borderClass} shadow-md transition-all duration-300 text-center md:text-left`}>
+        <div className={`w-full md:w-auto px-4 py-2 md:px-5 md:py-2.5 rounded-lg ${cityDisplayClass} font-medium text-sm md:text-base  shadow-md transition-all duration-300 text-center md:text-left`}>
           <span className="hidden md:inline"> </span>
           {displayCity.name}
         </div>

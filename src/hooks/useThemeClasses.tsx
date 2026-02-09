@@ -8,7 +8,7 @@ export const useThemeClasses = (theme:string) => {
     buttonClass: theme === 'dark'
       ? 'bg-black hover:from-grey-700 hover:to-grey-400 text-white'
       : 'bg-white hover:from-blue-600 hover:to-grey-100 text-black',
-    cityDisplayClass: theme === "dark" ? 'bg-gray-700/50 text-blue-300' : 'bg-blue-50 text-blue-700',
+    cityDisplayClass: theme === "dark" ? ' text-blue-300' : ' text-blue-700',
     emptyStateClass:theme === "dark" 
     ? 'bg-gray-800/50 text-gray-400 border-gray-700' 
     : 'bg-white/70 text-gray-500 border-gray-300',
