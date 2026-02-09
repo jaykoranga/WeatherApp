@@ -38,7 +38,7 @@ const WeatherForecastCard = ({
       <div className="flex items-center gap-3">
         <div className={`${iconBgClass} rounded-full p-2`}>
           <img
-            src={`https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`}
+            src={`https://openweathermap.org/img/wn/${weather[0].main==='Clear'?'01d':weather[0].icon}@2x.png`}
             alt={weather[0].description}
             className="w-12 h-12"
           />

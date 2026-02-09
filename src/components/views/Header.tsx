@@ -20,6 +20,7 @@ const Header = ({ setHeroLoading }: HeaderProps) => {
   
   async function handleUseMyLocation() {
     setHeroLoading(true);
+    
     try {
       const weather = await getMyLocation(setHeroLoading);
       setDisplayCity({
@@ -39,17 +40,17 @@ const Header = ({ setHeroLoading }: HeaderProps) => {
   return (
     <header className={`flex border-b-2 ${borderClass} px-4 py-7 md:px-6 md:py-8 items-center w-full relative ${bgClass} shadow-md transition-all duration-300`}>
       <button 
-        className={`${buttonClass} absolute right-40 md:right-45 px-2 py-2 md:px-5 md:py-2.5 rounded-lg font-semibold text-sm md:text-base shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer`} 
+        className={`${buttonClass} absolute right-32 md:right-45 px-2 py-2 md:px-5 md:py-2.5 rounded-lg font-semibold text-sm md:text-base shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer`} 
         onClick={handleUseMyLocation}
       >
-        {`📍`}Location
+        {`📍`}Current Location
       </button>
 
       <h1 className={`absolute left-20 md:left-1/2 -translate-x-1/2 text-xl md:text-2xl lg:text-3xl font-bold tracking-wide ${textClass} transition-colors duration-300`}>
         WEATHER APP
       </h1>
 
-      <div className="absolute right-20 md:right-25 flex flex-col items-end">
+      <div className="absolute right-18 md:right-25 flex flex-col items-end">
         <button
           onClick={() => setShowFavCitiesDropDown((prev) => !prev)}
           className={`${buttonClass} cursor-pointer px-4 py-2 md:px-5 md:py-2.5 rounded-lg font-semibold text-sm md:text-base shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out`}

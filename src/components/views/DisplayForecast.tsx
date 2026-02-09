@@ -6,7 +6,7 @@ import type { ForecastWeatherResponse } from "../../types/forecastType"
 import WeatherForecastCard from "./../cards/WeatherForecastCard"
 import type { ForecastItem } from '../../types/forecastType'
 import WeatherSkeleton from "./WeatherSkeleton"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 const DisplayForecast = () => {
   const { theme } = useTheme()
@@ -19,6 +19,7 @@ const DisplayForecast = () => {
 
   // Extract forecast list from API response
   const forecastData: ForecastItem[] = data?.list || []
+  
 
   // Group forecast data by date
   const groupedByDay = useMemo(() => {
@@ -37,6 +38,7 @@ const DisplayForecast = () => {
       }
       groups[dateKey].push(item)
     })
+    console.log("the grouped data by date is ",groups);
     
     return groups
   }, [forecastData])
@@ -56,7 +58,7 @@ const DisplayForecast = () => {
     if (sortedDates.length > 0 && !sortedDates.includes(selectedDay)) {
       setSelectedDay(sortedDates[0])
     }
-  }, [sortedDates, selectedDay])
+  }, [sortedDates, selectedDay,displayCity])
 
   // Get forecasts for selected day
   const selectedDayForecasts = groupedByDay[selectedDay] || []
@@ -91,6 +93,9 @@ const DisplayForecast = () => {
       })
     }
   }
+  useEffect(()=>{
+  setSelectedDay(sortedDates[0])
+  },[displayCity])
 
   // Handle loading state
   if (loading) {
@@ -117,6 +122,7 @@ const DisplayForecast = () => {
   }
 
   return (
+    
     <div className="w-full space-y-6">
       {/* Day Selector */}
       <div className={`${bgClass} ${borderClass} border backdrop-blur-sm rounded-lg p-4`}>

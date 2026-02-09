@@ -20,6 +20,7 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
   const { displayCity, setDisplayCity } = useCity()
   const { theme } = useTheme()
   const { bgClass, borderClass, buttonClass, cityDisplayClass } = useThemeClasses(theme)
+  
 
 
   // Create MUI theme based on current theme
@@ -40,7 +41,10 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
       console.log("Search weather for:", selectedCity)
       setDisplayCity(selectedCity)
       localStorage.setItem("current-weather", JSON.stringify(selectedCity))
-    } else return
+       setSelectedCity(null)
+    } 
+   
+
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -49,6 +53,9 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
 
     if (selectedCity) {
       handleSubmitInput()
+    }
+    else{
+     
     }
   }
 
@@ -64,6 +71,7 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
       try {
         
         const result = await fetchCities(finalInput)
+        console.log("result is ",result)
         setCities(result)
       
       } 
@@ -76,6 +84,9 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
     }
 
     getCities()
+    return ()=>{
+      setCities([])
+    }
     
   }, [finalInput])
 

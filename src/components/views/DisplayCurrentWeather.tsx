@@ -92,7 +92,7 @@ const DisplayCurrentWeather = () => {
       {/* Location Header - Compact */}
       <div className="text-center mb-3 flex justify-center items-center gap-5">
         <h2 className={`text-xl md:text-2xl font-bold ${textClass}`}>
-          {data.name} , {data.sys.country ? data.sys.country : ""}
+          {data.name} ,{} {data.sys.country ? data.sys.country : ""}
         </h2>
         <button className="text-2xl md:text-4xl font-bold cursor-pointer" onClick={handleFavouriteCity}>{isFavourite ? `❤️` : `🤍`}</button>
       </div>
@@ -104,7 +104,7 @@ const DisplayCurrentWeather = () => {
           <div className="flex flex-col items-center">
             <div className={`${iconBgClass} rounded-full p-1 shadow-md`}>
               <img
-                src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                src={`https://openweathermap.org/img/wn/${data.weather[0].main==='Clear'?'01d':data.weather[0].icon}@2x.png`}
                 alt={data.weather[0].description}
                 className="w-16 h-16 md:w-20 md:h-20"
               />
