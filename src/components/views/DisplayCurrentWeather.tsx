@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY
 import { useCity } from "../../context/CityContext"
 import { useTheme } from "../../context/ThemeContext"
@@ -23,7 +24,9 @@ const DisplayCurrentWeather = () => {
  
   useEffect(() => {
     console.log("useeffect from displayCurrentWeather ran ")
-    if(data?.cod===200) handleRecentCities(displayCity)
+    if(data?.cod===200) {handleRecentCities(displayCity)
+      toast.success("city fetched succesfully")
+    }
     setIsFavourite(false)
     favCities.forEach((e) => {
       if (e.name ===displayCity?.name) {
@@ -108,6 +111,7 @@ const DisplayCurrentWeather = () => {
   }
   if (data?.cod === 200) {
     console.log("display city from displaycurrent weather :", displayCity?.name)
+    
   }
   if(error){
     return(

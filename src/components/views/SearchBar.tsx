@@ -8,6 +8,7 @@ import { useCity } from "../../context/CityContext"
 import { useTheme } from "../../context/ThemeContext"
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { useThemeClasses } from "../../hooks/useThemeClasses"
+import toast from "react-hot-toast"
 interface SearchBarProps {
   searchInputRef: React.RefObject<HTMLInputElement | null>
 }
@@ -20,18 +21,18 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
   const { displayCity, setDisplayCity } = useCity()
   const { theme } = useTheme()
   const { bgClass, borderClass, buttonClass, cityDisplayClass } = useThemeClasses(theme)
-  const {recentCities,}=useCity()
+  const { recentCities, } = useCity()
 
 
   const autocompleteOptions = cities.length > 0
     ? cities
     : searchInput.trim() === ""
-    ? recentCities
-    : [];
+      ? recentCities
+      : [];
 
-    
-     
-   
+
+
+
   // Create MUI theme based on current theme
   const muiTheme = createTheme({
     palette: {
@@ -45,29 +46,29 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
     },
   })
 
-  function handleSubmitInput() {
-    if (selectedCity) {
-      console.log("Search weather for:", selectedCity)
-      setDisplayCity(selectedCity)
-      localStorage.setItem("current-weather", JSON.stringify(selectedCity))
-       setSelectedCity(null) 
-      
-       
+  function handleSubmitInput(city?: City | null) {
+    const cityToUse = city ?? selectedCity
+    if (!cityToUse){
+      toast.error("please select a city to fetch")
+      return
     } 
-   
 
+    console.log("Search weather for:", cityToUse)
+
+    setDisplayCity(cityToUse)
+    
+
+    setSelectedCity(null)
+    setSearchInput("")   // ✅ clear input
+    setCities([])        // ✅ close dropdown
+    
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key !== "Enter") return
     e.preventDefault()
 
-    if (selectedCity) {
-      handleSubmitInput()
-    }
-    else{
-     
-    }
+    handleSubmitInput()
   }
 
   useEffect(() => {
@@ -78,27 +79,30 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
     }
 
     const getCities = async () => {
-      
+
       try {
-        
+
         const result = await fetchCities(finalInput)
-        console.log("result is ",result)
+        if(result.length===0){
+          toast.error("no such city exists")
+        }
+        console.log("result is ", result)
         setCities(result)
-      
-      } 
-      
+
+      }
+
       catch (err) {
-        
+
         console.error(err)
       }
-    
+
     }
 
     getCities()
-    return ()=>{
+    return () => {
       setCities([])
     }
-    
+
   }, [finalInput])
 
   return (
@@ -110,30 +114,25 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
             options={autocompleteOptions}
             value={selectedCity}
             inputValue={searchInput}
-            
+
             onInputChange={(_, newInputValue) => {
               setSearchInput(newInputValue)
               setCities([])
             }}
             onChange={(_, newValue) => {
-             
-              setSelectedCity(newValue)
-              console.log("pressed")
-              handleSubmitInput()
-              if (newValue) {
-                setSearchInput(
-                  `${newValue.name}${newValue.state ? ` (${newValue.lon}${newValue.lat})` : ""}, ${newValue.country}`
-                )
-              }
+              if (!newValue) return
 
+              setSelectedCity(newValue)
+              handleSubmitInput(newValue)
             }}
+
             getOptionLabel={(option) => {
 
 
               return `${option.name ? `${option.name}` : `loading the option....`}${option.state ? ` (${option.state})` : ""}, ${option.country}`
             }
             }
-             getOptionKey={(option) => `${option.lat}${option.lon}`}
+            getOptionKey={(option) => `${option.lat}${option.lon}`}
             isOptionEqualToValue={(option, value) =>
               option.lat === value.lat && option.lon === value.lon
             }
@@ -166,7 +165,7 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
 
       <button
         className={`w-full md:w-auto px-6 py-3 md:px-8 md:py-3.5 rounded-xl font-semibold text-sm md:text-base ${buttonClass} shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 whitespace-nowrap`}
-        onClick={handleSubmitInput}
+        onClick={() => { handleSubmitInput() }}
       >
         Search
       </button>

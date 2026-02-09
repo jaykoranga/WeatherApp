@@ -1,4 +1,5 @@
 import type { CurrentWeather } from "../types/currentWeatherType" 
+import toast from "react-hot-toast"
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY
 
 export function getMyLocation(setHeroLoading:React.Dispatch<React.SetStateAction<boolean>>):Promise<CurrentWeather>{
@@ -21,13 +22,14 @@ export function getMyLocation(setHeroLoading:React.Dispatch<React.SetStateAction
                         throw new Error("failed to fetch the weather data for the user's current location")
                     }
                     const data:CurrentWeather=await result.json()
+                    toast.success("location data fetched succesfully")
                     resolve(data);
                 } catch (error) {
                     reject(error);
                 }
              },()=>{
                 
-                alert("please allow location to enable location search")
+              toast.error("please allow location to fetch the live location data")
                 setHeroLoading(false)
              })
              } catch (error) {
