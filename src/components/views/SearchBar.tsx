@@ -20,7 +20,7 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
   const { selectedCity, setSelectedCity } = useCity()
   const { displayCity, setDisplayCity } = useCity()
   const { theme } = useTheme()
-  const { bgClass, borderClass, buttonClass, cityDisplayClass } = useThemeClasses(theme)
+  const { bgClass, buttonClass, cityDisplayClass } = useThemeClasses(theme)
   const { recentCities, } = useCity()
 
 
@@ -174,7 +174,7 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
       </button>
 
       {displayCity && (
-        <div className={`w-full md:w-auto px-4 py-2 md:px-5 md:py-2.5 rounded-lg ${cityDisplayClass} font-medium text-sm md:text-base  shadow-md transition-all duration-300 text-center md:text-left`}>
+        <div className={`w-full md:w-auto px-4 py-2 md:px-5 md:py-2.5 rounded-lg ${cityDisplayClass} font-medium text-sm md:text-base  transition-all duration-300 text-center md:text-left`}>
           <span className="hidden md:inline"> </span>
           {displayCity.name}
         </div>
