@@ -5,6 +5,8 @@ export interface cityContextType{
     setSelectedCity:React.Dispatch<React.SetStateAction<City | null>>
     displayCity:City| null,
     setDisplayCity:React.Dispatch<React.SetStateAction<City | null>>
-    favCities:City[]
-    setFavCities:(input:City[])=>void
+    favCities:City[],
+    setFavCities:(input:City[])=>void,
+    recentCities:City[],
+    setRecentCities:(input:City[])=>void,
 }

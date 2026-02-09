@@ -3,10 +3,11 @@ const apiKey = import.meta.env.VITE_WEATHER_API_KEY
 import { useCity } from "../../context/CityContext"
 import { useTheme } from "../../context/ThemeContext"
 import { useFetch } from "../../hooks/useFetch"
-import { useLocalStorage } from "../../hooks/useLocalStorage"
+
 import type { CurrentWeather } from "../../types/currentWeatherType"
 import WeatherSkeleton from "./WeatherSkeleton"
 import { useThemeClasses } from "../../hooks/useThemeClasses"
+import type { City } from "../../types/citiesType"
 
 
 const DisplayCurrentWeather = () => {
@@ -14,15 +15,15 @@ const DisplayCurrentWeather = () => {
   const { theme } = useTheme()
   const [isFavourite, setIsFavourite] = useState(false)
   const { favCities, setFavCities } = useCity()
+  const {recentCities,setRecentCities}=useCity()
    const { bgClass, borderClass,textClass,cardBgClass,textSecondaryClass,iconBgClass } = useThemeClasses(theme)
 
   const { data, loading,error } = useFetch<CurrentWeather>(`https://api.openweathermap.org/data/2.5/weather?q=${displayCity?.name}&appid=${apiKey}`
   )
-  const [cacheWeather, setCacheWeather] = useLocalStorage<CurrentWeather | null>("weather", data);
+ 
   useEffect(() => {
-    console.log("the data object from displaycurrent weather :", data)
-    setCacheWeather(data);
-    console.log("the cache weather from local storage is :", cacheWeather);
+    console.log("useeffect from displayCurrentWeather ran ")
+    if(data?.cod===200) handleRecentCities(displayCity)
     setIsFavourite(false)
     favCities.forEach((e) => {
       if (e.name ===displayCity?.name) {
@@ -38,6 +39,35 @@ const DisplayCurrentWeather = () => {
     }
   }, [data])
 
+  //handle recent cities
+  function handleRecentCities(city:City|null){
+    console.log("handle recent cities function is called ")
+    
+    const recentCitiesArr=recentCities;
+    let flag=0;
+ 
+    recentCities.forEach((c,index,arr)=>{
+      if(c.name===city?.name)
+        flag=1;
+        let temp=arr[index];
+        let filteredArr=arr.filter((e)=>e!==temp)
+        filteredArr.unshift(temp);
+        setRecentCities(filteredArr)
+    
+    })
+
+    if(flag || !city)return
+
+    recentCitiesArr.unshift(city)
+      if(recentCitiesArr.length>2){
+        const temp=recentCities.slice(0,3)
+        setRecentCities(temp);
+        return;
+      }
+      setRecentCities(recentCities)
+    
+  }
+  
   //function to set a city to favouritise
   function handleFavouriteCity() {
 

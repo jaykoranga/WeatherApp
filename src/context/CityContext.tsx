@@ -8,9 +8,10 @@ export const CityProvider = ({children}:{children:ReactNode})=>{
     const [selectedCity,setSelectedCity]=useState<City|null>(null)
     const [displayCity,setDisplayCity]=useState<City|null>(null)
     const [favCities,setFavCities]=useLocalStorage<City[]>("fav-cities",[])
+    const [recentCities,setRecentCities]=useLocalStorage<City[]>("recent-cities",[])
 
     return (
-        <CityContext.Provider value={{selectedCity,setSelectedCity,displayCity,setDisplayCity,favCities,setFavCities}} >
+        <CityContext.Provider value={{selectedCity,setSelectedCity,displayCity,setDisplayCity,favCities,setFavCities,recentCities,setRecentCities}} >
         {children}
         </CityContext.Provider>
     )

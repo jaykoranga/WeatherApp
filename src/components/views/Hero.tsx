@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useCity } from "../../context/CityContext"
 import { useTheme } from "../../context/ThemeContext"
 import { useThemeClasses } from "../../hooks/useThemeClasses"
@@ -5,6 +6,7 @@ import { useThemeClasses } from "../../hooks/useThemeClasses"
 import DisplayCurrentWeather from './DisplayCurrentWeather'
 import DisplayForecast from "./DisplayForecast"
 import WeatherSkeleton from "./WeatherSkeleton"
+import { getMyLocation } from "../../api/getMyLocation"
 
 interface HeroProps {
   searchInputRef: React.RefObject<HTMLInputElement | null>
@@ -13,10 +15,31 @@ interface HeroProps {
 }
 
 const Hero = ({ searchInputRef, heroLoading, setHeroLoading }: HeroProps) => {
-  const { displayCity } = useCity()
+  const { displayCity ,setDisplayCity} = useCity()
   const { theme } = useTheme()
   const { bgClass, borderClass, textClass, emptyStateClass } = useThemeClasses(theme)
   
+  useEffect(()=>{
+     async function handleUseMyLocation() {
+        setHeroLoading(true);
+        
+        try {
+          const weather = await getMyLocation(setHeroLoading);
+          setDisplayCity({
+            name: weather.name,
+            lat: weather.coord.lat,
+            lon: weather.coord.lon,
+            country: weather.sys.country,
+            
+          });
+          setHeroLoading(false);
+        } catch (error) {
+          console.error("failed to fetch the user location data.");
+          setHeroLoading(false);
+        }
+      }
+      handleUseMyLocation()
+  },[])
 
   if (heroLoading) {
     return (<WeatherSkeleton></WeatherSkeleton>)

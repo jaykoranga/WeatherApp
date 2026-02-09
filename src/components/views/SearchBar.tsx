@@ -20,9 +20,18 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
   const { displayCity, setDisplayCity } = useCity()
   const { theme } = useTheme()
   const { bgClass, borderClass, buttonClass, cityDisplayClass } = useThemeClasses(theme)
-  
+  const {recentCities,}=useCity()
 
 
+  const autocompleteOptions = cities.length > 0
+    ? cities
+    : searchInput.trim() === ""
+    ? recentCities
+    : [];
+
+    
+     
+   
   // Create MUI theme based on current theme
   const muiTheme = createTheme({
     palette: {
@@ -41,7 +50,9 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
       console.log("Search weather for:", selectedCity)
       setDisplayCity(selectedCity)
       localStorage.setItem("current-weather", JSON.stringify(selectedCity))
-       setSelectedCity(null)
+       setSelectedCity(null) 
+      
+       
     } 
    
 
@@ -95,14 +106,19 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
       <div className="w-full md:w-auto md:flex-1 max-w-md my-auto">
         <ThemeProvider theme={muiTheme}>
           <Autocomplete<City, false, false, false>
-            options={cities}
+            noOptionsText={null}
+            options={autocompleteOptions}
             value={selectedCity}
             inputValue={searchInput}
+            
             onInputChange={(_, newInputValue) => {
               setSearchInput(newInputValue)
+              setCities([])
             }}
             onChange={(_, newValue) => {
+             
               setSelectedCity(newValue)
+              console.log("pressed")
               handleSubmitInput()
               if (newValue) {
                 setSearchInput(
