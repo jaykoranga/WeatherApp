@@ -59,7 +59,7 @@ const Hero = ({ searchInputRef, heroLoading, setHeroLoading }: HeroProps) => {
           </div>
 
           {/* Scroll Indicator */}
-          <div className="flex flex-col items-center gap-2 py-4 animate-bounce">
+          <div className="flex flex-col items-center gap-2 py-4 ">
             <p className={`text-sm ${textClass} opacity-70`}>Scroll for forecast</p>
             <svg 
               className={`w-6 h-6 ${textClass} opacity-70`}

@@ -46,9 +46,9 @@ const DisplayCurrentWeather = () => {
   function handleRecentCities(city:City|null){
     console.log("handle recent cities function is called ")
     
-    const recentCitiesArr=recentCities;
+    const recentCitiesArr=[...recentCities];
     let flag=0;
- 
+ // use usereducer here
     recentCities.forEach((c,index,arr)=>{
       if(c.name===city?.name)
         flag=1;
@@ -86,10 +86,8 @@ const DisplayCurrentWeather = () => {
 
     else {
       if (displayCity) favCitiesArr.push(displayCity)
-
       setFavCities(favCitiesArr)
       setIsFavourite(true);
-
     }
   }
   // Convert Kelvin to Celsius
@@ -130,7 +128,6 @@ const DisplayCurrentWeather = () => {
         </h2>
         <button className="text-2xl md:text-4xl font-bold cursor-pointer" onClick={handleFavouriteCity}>{isFavourite ? `❤️` : `🤍`}</button>
       </div>
-
       {/* Main Weather Display - Compact */}
       <div className={`${cardBgClass} backdrop-blur-sm rounded-lg p-3 md:p-4 mb-3 border ${borderClass} shadow-md transition-all duration-300 hover:scale-[1.01]`}>
         <div className="flex items-center justify-around gap-3">

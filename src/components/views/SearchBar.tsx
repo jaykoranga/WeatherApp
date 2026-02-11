@@ -59,7 +59,6 @@ const SearchBar = ({ searchInputRef }: SearchBarProps) => {
     console.log("Search weather for:", cityToUse)
 
     setDisplayCity(cityToUse)
-    
 
     setSelectedCity(null)
     setSearchInput("")   // ✅ clear input

@@ -1,15 +1,22 @@
-import { createContext, useState, useContext,type ReactNode } from "react";
+import { createContext, useContext,type ReactNode } from "react";
 import type {  themeContextType } from "../types/themeContextType";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const themeContext=createContext<themeContextType|null>(null);
 
 export const ThemeProvider =({children}:{children:ReactNode})=>{
-    const [theme,setTheme]=useState<string>("dark")
+    // const [theme,setTheme]=useState<string>("dark")
+    const [theme,setTheme]=useLocalStorage<string>("theme","dark")
    
     const toggleTheme=()=>{
-        setTheme((prev)=>{
-            return (prev==="light"?"dark":"light")
-        })
+        if(theme==="dark"){
+            setTheme("light")
+        }else{
+             setTheme("dark")
+        }
+        // setTheme((prev)=>{
+        //     return (prev==="light"?"dark":"light")
+        // })
     }
     return(
         <themeContext.Provider value={{theme,toggleTheme,}}>
